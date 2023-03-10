@@ -1,0 +1,4 @@
+#pagination_box li > a.active {
+    background-color: #3c8dbc;
+    color: white;
+}

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.java.expressage.mapper.BorrowingMapper">
+	<resultMap type="Borrowing" id="baseBorrowingMap">
+	<id column="id" property="id"/>
+	<result column="bookid" property="bookid"/>
+	<result column="usernumber" property="usernumber"/>
+	<result column="date" property="date"/>
+	<result column="status" property="status"/>
+	</resultMap>
+  <!-- 通过bookid查找借阅记录 -->
+  <select id="findBorrowingBook" resultMap="baseBorrowingMap">
+  select  id,bookid, usernumber ,date , status from borrowing where bookid=#{bookid}
+  </select>
+   <!-- 通过usernumber查找借阅记录 -->
+  <select id="findBorrowingNumber" resultMap="baseBorrowingMap">
+  select  id,bookid, usernumber ,date , status from borrowing where usernumber=#{usernumber}
+  </select>
+    <!-- 分页查询 -->
+   <select id="getBorrowingByKeyword" resultMap="baseBorrowingMap">
+  <bind name="keywords" value="'%' + keyword + '%'" />
+	select  borrowing.id,borrowing.bookid,book.bookname,borrowing.usernumber,usernumber.username,borrowing.date,borrowing.status 
+	from borrowing,usernumber,book
+	  <where>
+		  <if test="keyword != ''">
+				 		 usernumber.usernumber=#{keyword} and borrowing.usernumber=#{keyword} and book.id=borrowing.bookid 
+				 		 
+				 	</if>
+				 	<if test="keyword == ''">
+				 		 usernumber.usernumber=borrowing.usernumber and book.id=borrowing.bookid
+				 	</if>
+				 	  
+	  </where>
+	  limit #{begin},#{pageSize}
+  </select>
+  
+  <select id="getBorrowingByKeywordCount" resultType="int">
+  <bind name="keywords" value="'%' + keyword + '%'" />
+	  select count(*) from  borrowing,usernumber,book
+	  <where>
+		  <if test="keyword != ''">
+				 		 usernumber.usernumber=#{keyword} and borrowing.usernumber=#{keyword} and book.id=borrowing.bookid
+				 	</if>
+				 	<if test="keyword == ''">
+				 		 usernumber.usernumber=borrowing.usernumber and book.id=borrowing.bookid
+				 	</if>
+				 	</where>
+  </select>
+      <!-- 分页查询 -->
+   <select id="getBorrowingByKeywordadmin" resultMap="baseBorrowingMap">
+  <bind name="keywords" value="'%' + keyword + '%'" />
+	select  borrowing.id,borrowing.bookid,book.bookname,borrowing.usernumber,usernumber.username,borrowing.date,borrowing.status 
+	from borrowing,usernumber,book
+	  <where>
+		  <if test="keyword != ''">
+				 		 usernumber.usernumber=borrowing.usernumber  and book.id=#{keyword} and borrowing.bookid=#{keyword}
+				 	</if>
+				 	<if test="keyword == ''">
+				 		 usernumber.usernumber=borrowing.usernumber and book.id=borrowing.bookid
+				 	</if>
+				 	  
+	  </where>
+	  limit #{begin},#{pageSize}
+  </select>
+  
+  <select id="getBorrowingByKeywordCountadmin" resultType="int">
+  <bind name="keywords" value="'%' + keyword + '%'" />
+	  select count(*) from  borrowing,usernumber,book
+	  <where>
+		  <if test="keyword != ''">
+				 		 usernumber.usernumber=borrowing.usernumber and book.id=#{keyword} and borrowing.bookid=#{keyword}
+				 	</if>
+				 	<if test="keyword == ''">
+				 		 usernumber.usernumber=borrowing.usernumber and book.id=borrowing.bookid
+				 	</if>
+				 	</where>
+  </select>
+  <!-- 添加借阅记录 -->
+  <insert id="borrowingBook" parameterType="Borrowing"  useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+  insert into borrowing( bookid, usernumber , date , status) 
+  values (#{bookid},#{usernumber},#{date},1)
+  </insert>
+     <!-- 通过id修改借书人 -->
+  <update id="updateBorrowingBook">
+  update borrowing
+    <set>
+      <if test="usernumber != null">usernumber=#{usernumber},</if>
+      <if test="date != null">date=#{date},</if>
+      <if test="status != null">status=1,</if>
+    </set>
+  where bookid=#{bookid}
+</update>
+   <!-- 通过bookid修改借书人 
+  <update id="updateBorrowingByBookId">
+  update borrowing
+    <set>
+      <if test="bookname != null">bookname=#{bookname}</if>
+    </set>
+  where bookid=#{bookid}
+</update>-->
+     <!-- 通过id归还图书 -->
+  <update id="returnBook">
+  update borrowing
+   set   status=0
+  where bookid=#{bookid}
+</update>
+   <!-- 通过bookid删除记录 -->
+ <delete id="deleteBorrowing" parameterType="Borrowing">
+  delete from borrowing where bookid=#{bookid}
+  </delete>
+  <!-- 通过bookid删除记录 -->
+ <delete id="deleteBorrowingById" parameterType="Borrowing">
+  delete from borrowing where id=#{id}
+  </delete>
+</mapper>

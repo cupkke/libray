@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.java.expressage.mapper.BookMapper">
+	<resultMap type="Book" id="baseBookMap">
+	<id column="id" property="id"/>
+	<result column="bookname" property="bookname"/>
+	<result column="author" property="author"/>
+	<result column="publisher" property="publisher"/>
+	<result column="price" property="price"/>
+	<result column="category" property="category"/>
+	<result column="status" property="status"/>
+	<result column="bookdesc" property="bookdesc"/>
+	<result column="amount" property="amount"/>
+	</resultMap>
+	  <!-- 通过id查找图书 -->
+  <select id="findBookById" resultMap="baseBookMap">
+  select id , bookname, author, publisher, price , category , bookdesc, amount from book where id=#{id}
+  </select>
+    <!-- 通过书名和作者查找图书 -->
+  <select id="findBookByBnameAnd" resultMap="baseBookMap">
+  select id , bookname , author, publisher, price , category , bookdesc, amount from book 
+  where author=#{author} and bookname=#{bookname}
+  </select>
+	 <!-- 分页查询 -->
+  <select id="getBookByKeyword" resultMap="baseBookMap">
+  <bind name="keywords" value="'%' + keyword + '%'" />
+	  select id , bookname, author, publisher, price , category , bookdesc , amount   from book
+	  <where>
+		  <if test="keyword != ''">
+				 		bookname like #{keywords} or
+				 		author like #{keywords} or
+				 		publisher like  #{keywords} or
+				 		price like #{keywords} or
+				 		category like #{keywords} or
+				 		bookdesc like #{keywords} 
+				 	</if>
+	  </where>
+	  limit #{begin},#{pageSize}
+  </select>
+  
+  <select id="getBookByKeywordCount" resultType="int">
+  <bind name="keywords" value="'%' + keyword + '%'" />
+	  select count(*) from book
+	  <where>
+		  <if test="keyword != ''">
+				 		bookname like #{keywords} or
+				 		author like #{keywords} or
+				 		publisher like  #{keywords} or
+				 		price like #{keywords} or
+				 		category like #{keywords} or
+				 		bookdesc like #{keywords} 
+				 	</if>
+	  </where>
+  </select>
+   <!-- 分页查询 -->
+  <select id="getBookByKeywordtwo" resultMap="baseBookMap">
+  <bind name="keywords" value="'%' + keyword + '%'" />
+	   select id , bookname, author, publisher, price , category , bookdesc , amount   from book
+	  <where>
+		  <if test="keyword != ''">
+				 		bookname like #{keywords} or
+				 		author like #{keywords} or
+				 		publisher like  #{keywords} or
+				 		price like #{keywords} or
+				 		category like #{keywords} or
+				 		bookdesc like #{keywords} 
+				 	</if>
+	  </where>
+	  limit #{begin},#{pageSize}
+  </select>
+  
+  <select id="getBookByKeywordCounttwo" resultType="int">
+  <bind name="keywords" value="'%' + keyword + '%'" />
+	  select count(*) from book
+	  <where>
+		  <if test="keyword != ''">
+				 		bookname like #{keywords} or
+				 		author like #{keywords} or
+				 		publisher like  #{keywords} or
+				 		price like #{keywords} or
+				 		category like #{keywords} or
+				 		bookdesc like #{keywords} 
+				 	</if>
+	  </where>
+  </select>
+<!-- 添加图书 -->
+  <insert id="addBook" parameterType="Book"  useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+  insert into book( bookname, author, publisher , price , category ,  bookdesc , amount) 
+  values (#{bookname},#{author},#{publisher},#{price},#{category},#{bookdesc},#{amount})
+  </insert>
+   <!-- 通过id修改图书数据 -->
+    <update id="updateBookData">
+  update book
+    <set>
+      <if test="bookname != null">bookname=#{bookname},</if>
+      <if test="author != null">author=#{author},</if>
+      <if test="publisher != null">publisher=#{publisher},</if>
+      <if test="price != null">price=#{price},</if>
+      <if test="category != null">category=#{category},</if>
+      <if test="status != null">status=#{status},</if>
+      <if test="bookdesc != null">bookdesc=#{bookdesc},</if>
+      <if test="amount != null">amount=#{amount},</if>
+    </set>
+  where id=#{id}
+</update>
+   <!-- 通过id删除图书 -->
+ <delete id="deleteBook" parameterType="Book">
+  delete from book where id=#{id}
+  </delete>
+</mapper>

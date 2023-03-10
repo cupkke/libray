@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.java.expressage.mapper.UserMapper">
+	<resultMap type="User" id="baseUserMap">
+	<result column="username" property="username"/>
+	<result column="password" property="password"/>
+	<result column="gender" property="gender"/>
+	<result column="usernumber" property="usernumber"/>
+	<result column="age" property="age"/>
+	<result column="classinfo" property="classinfo"/>
+    <result column="role" property="role"/>
+	</resultMap>
+  <insert id="addUser" parameterType="User"  useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+  insert into user( username, gender,usernumber, age , classinfo , password,role) 
+  values (#{username},#{gender},#{usernumber},#{age},#{classinfo},#{password},"User")
+  </insert>
+   <insert id="addUserNumber" parameterType="User"  useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+  insert into usernumber(usernumber,username) 
+  values (#{usernumber},#{username})
+  </insert>
+  <!-- 通过学号查找用户 -->
+  <select id="login" resultMap="baseUserMap">
+  select  username, gender, usernumber, age , classinfo , password,role from user where usernumber=#{usernumber}
+  </select>
+    <!-- 分页查询 -->
+  <select id="getUserByKeyword" resultMap="baseUserMap">
+  <bind name="keywords" value="'%' + keyword + '%'" />
+	  select  username, gender, usernumber, age , classinfo , role  from user
+	  <where>
+		  <if test="keyword != ''">
+				 		username like #{keywords} or
+				 		gender like #{keywords} or
+				 		usernumber like  #{keywords} or
+				 		age like #{keywords} or
+				 		classinfo like #{keywords} 
+				 	</if>
+	  </where>
+	  limit #{begin},#{pageSize}
+  </select>
+  
+  <select id="getUserByKeywordCount" resultType="int">
+  <bind name="keywords" value="'%' + keyword + '%'" />
+	  select count(*) from user 
+	  <where>
+		  <if test="keyword != ''">
+				 		username like #{keywords} or
+				 		gender like #{keywords} or
+				 		usernumber like  #{keywords} or
+				 		age like #{keywords} or
+				 		classinfo like #{keywords} 
+				 	</if>
+	  </where>
+  </select>
+   <!-- 通过学号修改数据 -->
+  <update id="updateUserData">
+  update user
+    <set>
+      <if test="username != null">username=#{username},</if>
+      <if test="gender != null">gender=#{gender},</if>
+      <if test="age != null">age=#{age},</if>
+      <if test="password != null">password=#{password}</if>
+    </set>
+  where usernumber=#{usernumber}
+</update>
+ <!-- 通过学号修改用户账号姓名 -->
+<update id="updateUserNumber">
+  update usernumber
+    <set>
+      <if test="username != null">username=#{username},</if>
+    </set>
+  where usernumber=#{usernumber}
+</update>
+   <!-- 通过学号删除用户 -->
+ <delete id="deleteUser" parameterType="User">
+  delete from user where usernumber=#{usernumber}
+  </delete>
+   <!-- 通过学号删除用户账号姓名 -->
+ <delete id="deleteUserNumber" parameterType="User">
+  delete from usernumber where usernumber=#{usernumber}
+  </delete>
+</mapper>

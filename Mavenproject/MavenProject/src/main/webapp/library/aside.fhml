@@ -1,0 +1,44 @@
+<section class="sidebar">
+      <!-- sidebar menu: : style can be found in sidebar.less -->
+      <ul class="sidebar-menu" data-widget="tree">
+        <li class="header">主菜单</li>
+        <li class="treeview">
+          <a href="#">
+            <i class="fa fa-dashboard"></i> <span>用户管理</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="./user-list.html"><i class="fa fa-circle-o"></i> 用户列表</a></li>
+          </ul>
+        </li>
+		    <li class="treeview">
+          <a href="#">
+            <i class="fa fa-th"></i> <span>图书管理</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="./book-list.html"><i class="fa fa-circle-o"></i> 图书管理</a></li>
+            <li><a href="./home.html"><i class="fa fa-circle-o"></i> 图书借阅</a></li>
+            <li><a href="./borrowing.html"><i class="fa fa-circle-o"></i> 借阅记录</a></li>
+            <li><a href="./adminborrowing.html"><i class="fa fa-circle-o"></i> 全部借阅记录</a></li>
+          </ul>
+        </li>
+        <li class="treeview">
+          <a href="#">
+            <i class="fa fa-files-o"></i>
+            <span>个人信息</span>
+			<span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="./self.html"><i class="fa fa-circle-o"></i>个人信息</a></li>
+          </ul>
+        </li>
+		    
+      </ul>
+    </section>

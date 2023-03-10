@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<typeAliases>
+	  <package name="com.java.expressage.po"/>
+	</typeAliases>
+	
+	  <environments default="development">
+	    <environment id="development">
+	      <transactionManager type="JDBC"/>
+	      <dataSource type="POOLED">
+	        <property name="driver" value="com.mysql.cj.jdbc.Driver"/>
+	        <!-- serverTimezone=UTC时间表示方式
+	        useUnicode=true&amp;characterEncoding=UTF-8 编码方式  
+	        localhost
+	        -->
+	        <property name="url" value="jdbc:mysql://localhost:3306/booktest?useUnicode=true&amp;characterEncoding=UTF-8&amp;serverTimezone=UTC"/>
+	        <property name="username" value="root"/>
+	        <property name="password" value="root"/>
+	      </dataSource>
+	    </environment>
+	  </environments>
+  
+	  <mappers>
+	    <mapper resource="mapper/user-mapper.xml"/>
+	    <mapper resource="mapper/admin-mapper.xml"/>
+	    <mapper resource="mapper/book-mapper.xml"/>
+	    <mapper resource="mapper/borrowing-mapper.xml"/>
+	  </mappers>
+ 
+</configuration>

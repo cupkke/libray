@@ -1,0 +1,20 @@
+.media-list {
+	width: 1000px;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: flex-start;
+}
+
+.media-list .media-item {
+	width: 150px;
+	height: 150px;
+	margin-right: 30px;
+}
+.media-list .media-item strong{
+	font-weight: normal;
+	font-size: 12px;
+	text-align: center;
+	display: block;
+	padding: 0.5em 0;
+}
